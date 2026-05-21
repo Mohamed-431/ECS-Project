@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SSL Certificate Checker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="noise"></div>
+
+  <main>
+    <header>
+      <div class="lock-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <h1>SSL<span class="accent">.</span>Check</h1>
+      <p class="tagline">Inspect any domain's SSL certificate instantly</p>
+    </header>
+
+    <div class="search-bar">
+      <input
+        type="text"
+        id="domain-input"
+        placeholder="e.g. github.com"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button id="check-btn" onclick="checkSSL()">
+        <span class="btn-text">Check</span>
+        <span class="btn-loader" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <div class="quick-checks">
+      <span>Try:</span>
+      <button class="quick-btn" onclick="quickCheck('github.com')">github.com</button>
+      <button class="quick-btn" onclick="quickCheck('google.com')">google.com</button>
+      <button class="quick-btn" onclick="quickCheck('cloudflare.com')">cloudflare.com</button>
+    </div>
+
+    <div id="error-box" class="error-box" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <span id="error-msg"></span>
+    </div>
+
+    <div id="result" class="result" style="display:none">
+
+      <!-- STATUS BANNER -->
+      <div class="status-banner" id="status-banner">
+        <div class="status-icon" id="status-icon"></div>
+        <div class="status-text">
+          <div class="status-label" id="status-label"></div>
+          <div class="status-domain" id="status-domain"></div>
+        </div>
+        <div class="days-badge" id="days-badge"></div>
+      </div>
+
+      <!-- GRID -->
+      <div class="info-grid">
+
+        <div class="info-card">
+          <div class="card-label">Issued To</div>
+          <div class="card-value" id="r-subject"></div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-label">Issued By</div>
+          <div class="card-value" id="r-issuer"></div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-label">Valid From</div>
+          <div class="card-value" id="r-valid-from"></div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-label">Expires On</div>
+          <div class="card-value" id="r-valid-to"></div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-label">Protocol</div>
+          <div class="card-value" id="r-protocol"></div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-label">Cipher Suite</div>
+          <div class="card-value small" id="r-cipher"></div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-label">Wildcard Cert</div>
+          <div class="card-value" id="r-wildcard"></div>
+        </div>
+
+        <div class="info-card">
+          <div class="card-label">Serial Number</div>
+          <div class="card-value small mono" id="r-serial"></div>
+        </div>
+
+      </div>
+
+      <!-- SANS -->
+      <div class="sans-section" id="sans-section">
+        <div class="card-label">Covered Domains (SANs)</div>
+        <div class="sans-list" id="sans-list"></div>
+      </div>
+
+      <!-- FINGERPRINT -->
+      <div class="fingerprint-section">
+        <div class="card-label">SHA-1 Fingerprint</div>
+        <div class="fingerprint mono" id="r-fingerprint"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+name: Test, Build and Push Docker Image to ECR
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ssl-checker/**'
+
+jobs:
+
+  # ── JOB 1: SonarQube Scan 
+  sonarqube:
+    name: SonarQube Scan
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: SonarQube scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN:    ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          projectBaseDir: ssl-checker
+
+  # ── JOB 2: Build, Trivy Scan and Push
+  build:
+    name: Build, Trivy & Push to ECR
+    runs-on: ubuntu-latest
+    needs: sonarqube
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region:            ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.ECR_REGISTRY }}:${{ github.sha }} ./ssl-checker
+          docker tag ${{ secrets.ECR_REGISTRY }}:${{ github.sha }} ${{ secrets.ECR_REGISTRY }}:latest
+
+      - name: Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.ECR_REGISTRY }}:${{ github.sha }}
+          format:    table
+          exit-code: '0'
+          severity:  CRITICAL,HIGH
+          output:    trivy-report.txt
+
+      - name: Push image to ECR
+        run: |
+          docker push ${{ secrets.ECR_REGISTRY }}:${{ github.sha }}
+          docker push ${{ secrets.ECR_REGISTRY }}:latest
+          
+
+          
+      - name: Upload Trivy report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-report
+          path: trivy-report.txt
+          retention-days: 7
+
+    
+
+
+      
