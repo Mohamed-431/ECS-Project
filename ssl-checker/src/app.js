@@ -9,7 +9,7 @@ const PORT = 80
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
-// ── SSL CHECK ──────────────────────────────────────────────
+// ── SSL CHECK ─────────────────────────────────────────────
 function checkSSL(hostname) {
   return new Promise((resolve, reject) => {
     const options = {
