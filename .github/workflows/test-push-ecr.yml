@@ -29,6 +29,12 @@ jobs:
         with:
           projectBaseDir: ssl-checker
 
+      - name: Quality Gate Check
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        env:
+          SONAR_TOKEN:    ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
   # ── JOB 2: Build, Trivy Scan and Push
   build:
     name: Build, Trivy & Push to ECR
@@ -55,7 +61,7 @@ jobs:
           docker build -t ${{ secrets.ECR_REGISTRY }}:${{ github.sha }} ./ssl-checker
           docker tag ${{ secrets.ECR_REGISTRY }}:${{ github.sha }} ${{ secrets.ECR_REGISTRY }}:latest
 
-      - name: Trivy vulnerability scan
+      - name: Trivy Image Scan
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ secrets.ECR_REGISTRY }}:${{ github.sha }}
