@@ -6,7 +6,7 @@ const result = document.getElementById('result')
 const errBox = document.getElementById('error-box')
 const errMsg = document.getElementById('error-msg')
 
-// ── Enter key support ─────────────────────────────────────
+// ── Enter key support ────────────────────────────────────
 input.addEventListener('keydown', e => {
   if (e.key === 'Enter') checkSSL()
 })
