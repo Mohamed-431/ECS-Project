@@ -11,7 +11,7 @@ input.addEventListener('keydown', e => {
   if (e.key === 'Enter') checkSSL()
 })
 
-// ── Quick check buttons ───────────────────────────────────
+// ── Quick check buttons ──────────────────────────────────
 function quickCheck(domain) {
   input.value = domain
   checkSSL()
