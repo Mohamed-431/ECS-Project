@@ -11,7 +11,7 @@ module "vpc" {
 }
 
 module "acm" {
-  source = "./modules/ACM"
+  source = "./modules/acm"
 
   domain_name = var.domain_name
 
@@ -51,7 +51,7 @@ module "ecs" {
 }
 
 module "route53" {
-  source = "./modules/Route53"
+  source = "./modules/route53"
 
   domain_name = var.domain_name
   alb_dns_name = module.alb.alb_dns_name
