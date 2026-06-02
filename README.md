@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-In this project I will be deploying a containerised Node.js SSL Certificate Checker application on AWS ECS.This end-to-end DevOps implementation includes a secure CI/CD pipeline using GitHub Actions, ensuring every change is scanned and validated by modern security tools. The web application allows users to instantly inspect the SSL certificate of any domain, returning key details such as expiry date, issuer and health status.
+In this project I will be deploying a containerised Node.js SSL Certificate Checker application on AWS ECS. This end-to-end DevOps implementation includes a secure CI/CD pipeline using GitHub Actions, ensuring every change is scanned and validated by modern security tools. The web application allows users to instantly inspect the SSL certificate of any domain, returning key details such as expiry date, issuer and health status.
 
 ---
 
