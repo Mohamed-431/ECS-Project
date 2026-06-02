@@ -58,22 +58,22 @@ In this project I will be deploying a containerised Node.js SSL Certificate Chec
 
 ### Infrastructure as Code & Cloud Platform
 
-Configured Terraform to provision and manage the AWS cloud infrastructure following Infrastructure as Code best practices. A modular design approach was implemented to improve reusability, simplify infrastructure management, and support easier scaling of cloud resources, while Terraform remote state management with Amazon S3 and DynamoDB state locking ensured secure and reliable collaborative deployments.
+Configured Terraform to provision and manage the AWS cloud infrastructure following Infrastructure as Code best practices. A modular design approach was implemented to improve reusability, simplify infrastructure management, and support easier scaling of cloud resources, while Terraform remote state management with AWS S3 and AWS DynamoDB state locking ensured secure and reliable collaborative deployments.
 
 ---
 ### CI/CD
 
-Built and orchestrated a CI/CD pipeline using GitHub Actions across three dedicated workflows. Static code analysis, container image scanning, and pushing the image to Amazon ECR are handled within a single automated workflow triggered on every push to the main branch. Two additional manual workflows manage infrastructure provisioning and destruction, requiring explicit confirmation before any changes are applied to the cloud environment to ensure controlled and secure infrastructure operations.
+Built and orchestrated a CI/CD pipeline using GitHub Actions across three dedicated workflows. Static code analysis, container image scanning, and pushing the image to AWS ECR are handled within a single automated workflow triggered on every push to the main branch. Two additional manual workflows manage infrastructure provisioning and destruction, requiring explicit confirmation before any changes are applied to the cloud environment to ensure controlled and secure infrastructure operations.
 
 ---
 ### Security 
 
-Implemented industry-standard security measures using Trivy and SonarCloud to guarantee the security of any changes that reach the container registry. By identifying and preventing security threats at both the code and container level, these tools ensure every deployment is safe from code commit to container push.
+Implemented industry-standard security measures using Trivy and SonarCloud to guarantee the security of any changes that reach the container registry. By identifying and preventing security threats at both the code and container level, these tools ensure every deployment is safe from code commit to container push. Additionally, the application is protected with HTTPS using an AWS Certificate Manager (ACM) certificate automatically provisioned and validated via AWS Route 53, ensuring all traffic between users and the application is encrypted in transit.
 
 ---	
 ### Containerisation & Container Orchestration
 
-Utilised Docker to containerise the Node.js application into a lightweight, portable container, ensuring consistent and reproducible behaviour across all environments. Amazon ECS then handled container orchestration, eliminating the need to manage the underlying infrastructure and automatically executing health checks, task restarts, and load balancer integration to maintain high availability.
+Utilised Docker to containerise the Node.js application into a lightweight, portable container, ensuring consistent and reproducible behaviour across all environments. AWS ECS then handled container orchestration, eliminating the need to manage the underlying infrastructure and automatically executing health checks, task restarts, and load balancer integration to maintain high availability.
 
 ---
 
